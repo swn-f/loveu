@@ -59,7 +59,7 @@
             ctx.fillRect(0, 0, width, height);
             
             const cx = width / 2;
-            // Опускаем сердце на 5 строчек (примерно 70 пикселей)
+            // Сердце опущено на 5 строчек
             const cy = height / 2 + 70;
             const maxSize = Math.min(width, height) * 0.35;
             
@@ -86,33 +86,21 @@
                 }
             }
             
-            // Красивая надпись по центру сердца
-            const centerFontSize = Math.min(width, height) * 0.06;
+            // Надпись "i love u." поднята на 2 строчки относительно центра сердца
+            const centerFontSize = Math.min(width, height) * 0.08;
+            const textY = cy - 28; // Поднимаем на 2 строчки (14px * 2)
             
+            ctx.font = `bold ${centerFontSize}px "Georgia", serif`;
+            ctx.fillStyle = '#ffffff';
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
             
-            // Тень для надписи
-            ctx.shadowColor = 'rgba(255, 255, 255, 0.5)';
-            ctx.shadowBlur = 20 + Math.sin(time * 0.03) * 10;
-            
-            // Основная надпись
-            ctx.font = `bold ${centerFontSize}px "Georgia", serif`;
-            ctx.fillStyle = '#ffffff';
-            
-            // Пульсация
-            const scale = 1 + Math.sin(time * 0.04) * 0.03;
+            const scale = 1 + Math.sin(time * 0.05) * 0.05;
             ctx.save();
-            ctx.translate(cx, cy);
+            ctx.translate(cx, textY);
             ctx.scale(scale, scale);
-            
-            // Три строки для красоты
-            ctx.fillText('i', 0, -centerFontSize * 1.2);
-            ctx.fillText('love', 0, 0);
-            ctx.fillText('u.', 0, centerFontSize * 1.2);
-            
+            ctx.fillText('i love u.', 0, 0);
             ctx.restore();
-            ctx.shadowBlur = 0;
         }
 
         function animate() {
