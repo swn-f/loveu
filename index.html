@@ -46,31 +46,9 @@
             const dx = (x - cx) / size;
             const dy = (y - cy) / size;
             
-            // Переворачиваем сердце (меняем знак y)
-            const value = Math.pow(dx * dx + dy * dy - 1, 3) - dx * dx * (-dy) * (-dy) * (-dy);
+            // Нормальное сердце остриём вниз
+            const value = Math.pow(dx * dx + dy * dy - 1, 3) - dx * dx * dy * dy * dy;
             return value <= 0;
-        }
-
-        function drawHeartText(cx, cy, size, text, fontSize) {
-            const stepX = fontSize * 0.55;
-            const stepY = fontSize * 1.1;
-            
-            const startX = cx - size * 1.3;
-            const startY = cy - size * 1.2;
-            const endX = cx + size * 1.3;
-            const endY = cy + size * 1.1;
-            
-            let charIndex = 0;
-            
-            for (let y = startY; y <= endY; y += stepY) {
-                for (let x = startX; x <= endX; x += stepX) {
-                    if (isInsideHeart(x, y, cx, cy, size)) {
-                        const char = text[charIndex % text.length];
-                        ctx.fillText(char, x, y);
-                        charIndex++;
-                    }
-                }
-            }
         }
 
         function draw() {
@@ -81,27 +59,29 @@
             const cy = height / 2;
             const maxSize = Math.min(width, height) * 0.35;
             
+            const fontSize = 14;
+            const stepX = fontSize * 0.55;
+            const stepY = fontSize * 1.1;
+            
+            ctx.fillStyle = '#ff3366';
+            ctx.font = `bold ${fontSize}px "Courier New", monospace`;
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
-            ctx.fillStyle = '#ff3366';
             
-            // Слои сердец одного цвета
-            const layers = [
-                { size: maxSize, fontSize: 14, opacity: 1 },
-                { size: maxSize * 0.72, fontSize: 10, opacity: 0.85 },
-                { size: maxSize * 0.5, fontSize: 7, opacity: 0.7 },
-                { size: maxSize * 0.33, fontSize: 5, opacity: 0.55 },
-                { size: maxSize * 0.2, fontSize: 3.5, opacity: 0.4 },
-                { size: maxSize * 0.12, fontSize: 2.5, opacity: 0.25 },
-            ];
+            // Заполняем весь экран текстом
+            let charIndex = 0;
+            const text = "love you ";
             
-            layers.forEach(({ size, fontSize, opacity }) => {
-                ctx.globalAlpha = opacity;
-                ctx.font = `bold ${fontSize}px "Courier New", monospace`;
-                drawHeartText(cx, cy, size, "love you ", fontSize);
-            });
-            
-            ctx.globalAlpha = 1;
+            for (let y = 0; y <= height; y += stepY) {
+                for (let x = 0; x <= width; x += stepX) {
+                    // Рисуем текст только если точка НЕ внутри сердца (инверсия)
+                    if (!isInsideHeart(x, y, cx, cy, maxSize)) {
+                        const char = text[charIndex % text.length];
+                        ctx.fillText(char, x, y);
+                    }
+                    charIndex++;
+                }
+            }
         }
 
         window.addEventListener('resize', () => {
