@@ -34,6 +34,7 @@
         const ctx = canvas.getContext('2d');
 
         let width, height;
+        let time = 0;
 
         function resize() {
             width = window.innerWidth;
@@ -52,6 +53,8 @@
         }
 
         function draw() {
+            time++;
+            
             ctx.fillStyle = '#0d0d0d';
             ctx.fillRect(0, 0, width, height);
             
@@ -74,7 +77,7 @@
             
             for (let y = 0; y <= height; y += stepY) {
                 for (let x = 0; x <= width; x += stepX) {
-                    // Рисуем текст только если точка НЕ внутри перевёрнутого сердца
+                    // Рисуем текст только если точка НЕ внутри сердца
                     if (!isInsideHeart(x, y, cx, cy, maxSize)) {
                         const char = text[charIndex % text.length];
                         ctx.fillText(char, x, y);
@@ -82,15 +85,34 @@
                     charIndex++;
                 }
             }
+            
+            // Большая надпись в центре сердца
+            const centerFontSize = Math.min(width, height) * 0.08;
+            ctx.font = `bold ${centerFontSize}px "Georgia", serif`;
+            ctx.fillStyle = '#ffffff';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            
+            // Лёгкая пульсация
+            const scale = 1 + Math.sin(time * 0.05) * 0.05;
+            ctx.save();
+            ctx.translate(cx, cy);
+            ctx.scale(scale, scale);
+            ctx.fillText('i love u.', 0, 0);
+            ctx.restore();
+        }
+
+        function animate() {
+            draw();
+            requestAnimationFrame(animate);
         }
 
         window.addEventListener('resize', () => {
             resize();
-            draw();
         });
 
         resize();
-        draw();
+        animate();
     </script>
 </body>
 </html>
