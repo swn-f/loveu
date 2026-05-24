@@ -15,7 +15,7 @@
             width: 100vw;
             height: 100vh;
             overflow: hidden;
-            background: #0d0d0d;
+            background: #fcfcfc;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -55,7 +55,7 @@
         function draw() {
             time++;
             
-            ctx.fillStyle = '#0d0d0d';
+            ctx.fillStyle = '#fcfcfc';
             ctx.fillRect(0, 0, width, height);
             
             const cx = width / 2;
@@ -67,7 +67,7 @@
             const stepX = fontSize * 0.55;
             const stepY = fontSize * 1.1;
             
-            ctx.fillStyle = '#ff3366';
+            ctx.fillStyle = '#45322b';
             ctx.font = `bold ${fontSize}px "Courier New", monospace`;
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
@@ -91,7 +91,7 @@
             const textY = cy - 28; // Поднимаем на 2 строчки (14px * 2)
             
             ctx.font = `bold ${centerFontSize}px "Georgia", serif`;
-            ctx.fillStyle = '#ffffff';
+            ctx.fillStyle = '#c5de79';
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
             
